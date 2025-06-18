@@ -76,10 +76,10 @@ ERD
 
 1. Visual Studio 프로젝트 생성
 2. NuGet 패키지 설치
-    - 
-    -
-    -
-    -
+    - CommunityToolkit.Mvvm
+    - MahApps.Metro, IconPacks
+    - MQTTNet
+    - Newtonsoft.Json
 3. View, ViewModel 구성
 4. WPF 애니메이션 기능으로 컨베이어벨트 구현
 
@@ -87,9 +87,11 @@ ERD
     https://github.com/user-attachments/assets/ca7fd983-4ebc-4081-bedb-2acfb91cd320
 
 
+5. 선별결과를  MQTT로 전달 기능 추가
+
 ##### MQTT Subscriber
 - WPF 과목에서 사용했던 MQTT Subscriber 그래도 사용
-- WpfMqttSubApp 수
+- WpfMqttSubApp 프로젝트 가져오기
 - SmartHome 작업했던 부분 수정 DB 저장 변경
 
 ##### WPF 공정관리 앱 개발
