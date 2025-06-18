@@ -75,6 +75,15 @@ ERD
 - C# 시뮬레이션으로 동작을 만드는 윈앱 구현
 
 1. Visual Studio 프로젝트 생성
+2. NuGet 패키지 설치
+    - 
+    -
+    -
+    -
+3. View, ViewModel 구성
+4. WPF 애니메이션 기능으로 컨베이어벨트 구현
+
+
 
 ##### MQTT Subscriber
 - WPF 과목에서 사용했던 MQTT Subscriber 그래도 사용
