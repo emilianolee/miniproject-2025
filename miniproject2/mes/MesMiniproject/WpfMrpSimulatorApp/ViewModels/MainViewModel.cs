@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WpfMrpSimulatorApp.Helpers;
 using WpfMrpSimulatorApp.Views;
 
 namespace WpfMrpSimulatorApp.ViewModels
@@ -59,13 +60,25 @@ namespace WpfMrpSimulatorApp.ViewModels
         [RelayCommand]
         public void AppSetting()
         {
-            var viewModel = new SettingViewModel();
+            var viewModel = new SettingViewModel(Common.DIALOGCOORDINAATOR);
             var view = new SettingView
             {
                 DataContext = viewModel,
             };
 
             CurrentView = view;
+        }
+
+        [RelayCommand]
+        public void SetSchedule()
+        {
+            var viewModel = new ScheduleViewModel(Common.DIALOGCOORDINAATOR);
+            var view = new ScheduleView
+            {
+                DataContext = viewModel,
+            };
+
+            CurrentView = view; 
         }
 
     }
