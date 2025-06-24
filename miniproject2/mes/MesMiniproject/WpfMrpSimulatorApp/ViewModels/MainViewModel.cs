@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WpfMrpSimulatorApp.Helpers;
+using WpfMrpSimulatorApp.Models;
 using WpfMrpSimulatorApp.Views;
 
 namespace WpfMrpSimulatorApp.ViewModels
@@ -17,13 +18,14 @@ namespace WpfMrpSimulatorApp.ViewModels
     {
         // 다이얼로그 코디네이터 변수 선언
         private readonly IDialogCoordinator dialogCoordinator;
-        
+
         private string _greeting;
         private UserControl _currentView;
 
         public MainViewModel(IDialogCoordinator coordinator)
         {
             this.dialogCoordinator = coordinator;   // 다이얼로그 코디네이터 초기화
+
 
             Greeting = "MRP 공정관리";
         }
