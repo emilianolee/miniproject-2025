@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WpfMrpSimulatorApp.Views
 {
     /// <summary>
-    /// ScheduleView.xaml에 대한 상호 작용 논리
+    /// MonitoringView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ScheduleView : UserControl
+    public partial class MonitoringView : UserControl
     {
-        public ScheduleView()
+        public MonitoringView()
         {
             InitializeComponent();
         }

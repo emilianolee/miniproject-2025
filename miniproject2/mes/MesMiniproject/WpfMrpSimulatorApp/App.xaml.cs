@@ -15,9 +15,9 @@ namespace WpfMrpSimulatorApp
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Common.DIALOGCOORDINAATOR = DialogCoordinator.Instance;
+            Common.DIALOGCOORDINATOR = DialogCoordinator.Instance;
 
-            var viewModel = new MainViewModel(Common.DIALOGCOORDINAATOR);
+            var viewModel = new MainViewModel(Common.DIALOGCOORDINATOR);
             var view = new MainView
             {
                 DataContext = viewModel,
@@ -26,5 +26,4 @@ namespace WpfMrpSimulatorApp
             view.ShowDialog();
         }
     }
-
 }

@@ -5,21 +5,21 @@ using MQTTnet;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using WpfMqttSubApp.Models;
-
 
 namespace WpfMqttSubApp.ViewModels
 {
     public partial class MainViewModel : ObservableObject, IDisposable
     {
-        #region 내부 멤버 변수
+        #region 내부 멤버변수
 
         private IMqttClient mqttClient;
-        private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IDialogCoordinator dialogCoordinator;
         private readonly DispatcherTimer timer;
-        private int linecounter = 1; // TODO : 나중에 텍스트가 너무 많아져서 느려지면 초기화시 사용
+        private int lineCounter = 1;  // TODO : 나중에 텍스트가 너무 많아져서 느려지면 초기화시 사용
 
         private string connString = string.Empty;
         private MySqlConnection connection;
@@ -28,7 +28,7 @@ namespace WpfMqttSubApp.ViewModels
 
         #endregion
 
-        #region MVVM용 멤버 변수
+        #region MVVM용 멤버변수
 
         private string _brokerHost;
         private string _databaseHost;
@@ -37,23 +37,22 @@ namespace WpfMqttSubApp.ViewModels
         #endregion
 
         #region 생성자
-
         // 속성 BrokerHost, DatabaseHost
-        // 메서드 ConnectBrokerCommand, ConnectDatabaseCommand
+        // 메서드 ConnectBrokerCommand, ConnectDatabaseCommand       
 
         public MainViewModel(IDialogCoordinator coordinator)
         {
-            this._dialogCoordinator = coordinator;
+            this.dialogCoordinator = coordinator;
 
-            BrokerHost = App.Configuration.Mqtt.Broker; //"210.119.12.59";
-            DatabaseHost = App.Configuration.Database.Server; //"210.119.12.59";
-            mqttTopic = App.Configuration.Mqtt.Topic; //"pknu/sf59/data";   // 설정파일로 작업 가능
-            clientId = App.Configuration.Mqtt.ClientId; //"MesMqttSub";
+            BrokerHost = App.Configuration.Mqtt.Broker;  // "210.119.12.52";
+            DatabaseHost = App.Configuration.Database.Server;
+            mqttTopic = App.Configuration.Mqtt.Topic;    // 설정파일로 작업가능
+            clientId = App.Configuration.Mqtt.ClientId; 
 
-            connection = new MySqlConnection();     // 예외처리용
+            connection = new MySqlConnection();  // 예외처리용 
 
-            // RichTextBox 테스트용.
-            //timer= new DispatcherTimer();
+            // RichTextBox 테스트용. 
+            //timer = new DispatcherTimer();
             //timer.Interval = TimeSpan.FromSeconds(1);
             //timer.Tick += (sender, e) =>
             //{
@@ -86,7 +85,7 @@ namespace WpfMqttSubApp.ViewModels
             set => SetProperty(ref _databaseHost, value);
         }
 
-        #endregion 
+        #endregion
 
         private async Task ConnectMqttBroker()
         {
@@ -94,40 +93,39 @@ namespace WpfMqttSubApp.ViewModels
             var mqttFactory = new MqttClientFactory();
             mqttClient = mqttFactory.CreateMqttClient();
 
-            // MQTT 클라이언트 접속 설정
+            // MQTT 클라이언트접속 설정
             var mqttClientOptions = new MqttClientOptionsBuilder()
-                .WithTcpServer(BrokerHost)
-                .WithClientId(clientId)     // 구독 시스템도 클라이언트 ID가 필요할 수 있음
+                .WithTcpServer(BrokerHost, App.Configuration.Mqtt.Port)
+                //.WithClientId(clientId)  // 구독시스템도 클라이언트ID가 필요할 수 있음
                 .WithCleanSession(true)
                 .Build();
 
-            // MQTT 접속 후 이벤트 처리
+            // MQTT 접속 후 이벤트처리
             mqttClient.ConnectedAsync += async e =>
             {
-                LogText += "MQTT 브로커 접속성공\n";
+                LogText += "MQTT 브로커 접속성공!\n";
                 // 연결 이후 구독(Subscribe)
                 await mqttClient.SubscribeAsync(mqttTopic);
             };
-
-            // MQTT 구독메시지 로그 출력
+            // MQTT 구독메시지 로그출력
             mqttClient.ApplicationMessageReceivedAsync += e =>
             {
                 var topic = e.ApplicationMessage.Topic;
-                var payload = e.ApplicationMessage.ConvertPayloadToString();    // byte 데이터를 UTF-8 문자열로 전환
+                var payload = e.ApplicationMessage.ConvertPayloadToString(); // byte 데이터를 UTF-8 문자열로 변환
 
-                // json 데이터를 일반 객체로 다시 변환 -> 역직렬화(Deserialization)
+                // json데이터를 일반객체로 다시 변환 -> 역직렬화(Deserialization)
                 var data = JsonConvert.DeserializeObject<CheckResult>(payload);
                 Debug.WriteLine($"{data.ClientId} / {data.Timestamp} / {data.Result}");
 
                 //SaveSensingData(data);
 
-                LogText += $"LINENUMBER : {linecounter++}\n";
+                LogText += $"LINENUMBER : {lineCounter++}\n";
                 LogText += $"{payload}\n";
 
                 return Task.CompletedTask;
             };
 
-            await mqttClient.ConnectAsync(mqttClientOptions);   // MQTT 서버에 접속
+            await mqttClient.ConnectAsync(mqttClientOptions); // MQTT 서버에 접속
         }
 
         private async Task SaveSensingData(FakeInfo data)
@@ -141,7 +139,7 @@ namespace WpfMqttSubApp.ViewModels
 
             try
             {
-                if (connection.State == System.Data.ConnectionState.Open) 
+                if (connection.State == System.Data.ConnectionState.Open)
                 {
                     using var cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@sensing_dt", data.Sensing_Dt);
@@ -152,13 +150,14 @@ namespace WpfMqttSubApp.ViewModels
                     cmd.Parameters.AddWithValue("@light", data.Light);
                     cmd.Parameters.AddWithValue("@human", data.Human);
 
-                    await cmd.ExecuteNonQueryAsync();   // 이전까지는 cmd.ExecuteNonQuery()
+                    await cmd.ExecuteNonQueryAsync(); // 이전까지는 cmd.ExecuteNonQuery()
                 }
             }
             catch (Exception ex)
             {
-                // TODO : 아무 예외처리 안해도 됨
+                // TODO : 아무 예외처리 안해도 됨.
             }
+            
         }
 
         private async Task ConnectDatabaseServer()
@@ -167,20 +166,22 @@ namespace WpfMqttSubApp.ViewModels
             {
                 connection = new MySqlConnection(connString);
                 connection.Open();
-                LogText += $"{DatabaseHost} DB서버 접속 성공! {connection.State}\n";
+                LogText += $"{DatabaseHost} DB서버 접속성공! {connection.State}\n";
+                
             }
             catch (Exception ex)
             {
-                LogText += $"{DatabaseHost} DB서버 접속 실패 : {ex.Message}\n";
+                LogText += $"{DatabaseHost} DB서버 접속실패 : {ex.Message}\n";
             }
         }
+
 
         [RelayCommand]
         public async Task ConnectBroker()
         {
             if (string.IsNullOrEmpty(BrokerHost))
             {
-                await this._dialogCoordinator.ShowMessageAsync(this, "브로커 연결", "브로커 호스트를 입력하세요!");
+                await this.dialogCoordinator.ShowMessageAsync(this, "브로커연결", "브로커호스트를 입력하세요");
                 return;
             }
 
@@ -188,12 +189,13 @@ namespace WpfMqttSubApp.ViewModels
             await ConnectMqttBroker();
         }
 
+
         [RelayCommand]
         public async Task ConnectDatabase()
         {
             if (string.IsNullOrEmpty(DatabaseHost))
             {
-                await this._dialogCoordinator.ShowMessageAsync(this, "DB 연결", "DB 호스트를 입력하세요!");
+                await this.dialogCoordinator.ShowMessageAsync(this, "DB연결", "DB호스트를 입력하세요");
                 return;
             }
 
@@ -201,7 +203,7 @@ namespace WpfMqttSubApp.ViewModels
                          $"Database={App.Configuration.Database.Database};" +
                          $"Uid={App.Configuration.Database.UserId};" +
                          $"Pwd={App.Configuration.Database.Password};" +
-                         $"Charset=utf8";
+                         "Charset=utf8";
 
             await ConnectDatabaseServer();
         }
@@ -209,7 +211,7 @@ namespace WpfMqttSubApp.ViewModels
         public void Dispose()
         {
             // 리소스 해제를 명시적으로 처리하는 기능 추가
-            connection?.Close(); // DB접속해제
+            connection?.Close(); // DB접속 해제
         }
     }
 }

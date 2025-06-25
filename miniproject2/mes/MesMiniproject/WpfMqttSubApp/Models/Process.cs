@@ -17,12 +17,15 @@ public partial class Process
     /// </summary>
     public string PrcCd { get; set; } = null!;
 
-    public DateOnly? PrcDate { get; set; }
+    /// <summary>
+    /// 실제 공정처리일
+    /// </summary>
+    public DateOnly PrcDate { get; set; }
 
     /// <summary>
-    /// 실제 로드타입
+    /// 실제 로드타임
     /// </summary>
-    public int? PrcLoadTime { get; set; }
+    public int PrcLoadTime { get; set; }
 
     /// <summary>
     /// 실제 시작시간
@@ -35,13 +38,12 @@ public partial class Process
     public TimeOnly? PrcEndTime { get; set; }
 
     /// <summary>
-    /// 실제 공정 장비 아이디
-    /// 
+    /// 실제 공정장비아이디
     /// </summary>
     public string? PrcFacilityId { get; set; }
 
     /// <summary>
-    /// 공정처리 여부(1은 성공 0은  실패)
+    /// 공정처리 여부(1성공, 0실패)
     /// </summary>
     public sbyte? PrcResult { get; set; }
 

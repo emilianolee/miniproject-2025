@@ -1,11 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WpfMrpSimulatorApp.Helpers;
@@ -24,10 +19,9 @@ namespace WpfMrpSimulatorApp.ViewModels
 
         public MainViewModel(IDialogCoordinator coordinator)
         {
-            this.dialogCoordinator = coordinator;   // 다이얼로그 코디네이터 초기화
+            this.dialogCoordinator = coordinator; // 다이얼로그 코디네이터 초기화
 
-
-            Greeting = "MRP 공정관리";
+            Greeting = "MRP 공정관리!";
         }
 
         public string Greeting
@@ -42,18 +36,15 @@ namespace WpfMrpSimulatorApp.ViewModels
             set => SetProperty(ref _currentView, value);
         }
 
-
         [RelayCommand]
         public async Task AppExit()
         {
             //var result = MessageBox.Show("종료하시겠습니까?", "종료확인", MessageBoxButton.YesNo, MessageBoxImage.Question);
             var result = await this.dialogCoordinator.ShowMessageAsync(this, "종료확인", "종료하시겠습니까?", MessageDialogStyle.AffirmativeAndNegative);
-
-            if (result == MessageDialogResult.Affirmative)
+            if (result == MessageDialogResult.Affirmative) 
             {
                 Application.Current.Shutdown();
-            }
-            else
+            } else
             {
                 return;
             }
@@ -62,7 +53,7 @@ namespace WpfMrpSimulatorApp.ViewModels
         [RelayCommand]
         public void AppSetting()
         {
-            var viewModel = new SettingViewModel(Common.DIALOGCOORDINAATOR);
+            var viewModel = new SettingViewModel(Common.DIALOGCOORDINATOR);
             var view = new SettingView
             {
                 DataContext = viewModel,
@@ -74,14 +65,25 @@ namespace WpfMrpSimulatorApp.ViewModels
         [RelayCommand]
         public void SetSchedule()
         {
-            var viewModel = new ScheduleViewModel(Common.DIALOGCOORDINAATOR);
+            var viewModel = new ScheduleViewModel(Common.DIALOGCOORDINATOR);
             var view = new ScheduleView
             {
                 DataContext = viewModel,
             };
 
-            CurrentView = view; 
+            CurrentView = view;
         }
 
+        [RelayCommand]
+        public void GetMonitoring()
+        {
+            var viewModel = new MonitoringViewModel(Common.DIALOGCOORDINATOR);
+            var view = new MonitoringView
+            {
+                DataContext = viewModel,
+            };
+
+            CurrentView = view;
+        }
     }
 }

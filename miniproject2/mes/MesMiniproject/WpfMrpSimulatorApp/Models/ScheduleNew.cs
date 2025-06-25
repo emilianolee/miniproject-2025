@@ -15,9 +15,12 @@ public partial class ScheduleNew
     /// </summary>
     public string PlantCode { get; set; } = null!;
 
-    // 데이터 그리드에 표현하려면 새로운 속성이 필요!!
+    // 데이터그리드에 표현하려면 새로운 속성이 필요!!
     public string PlantName { get; set; }
 
+    /// <summary>
+    /// 공정계획일
+    /// </summary>
     public DateOnly SchDate { get; set; }
 
     /// <summary>
@@ -26,35 +29,34 @@ public partial class ScheduleNew
     public int LoadTime { get; set; }
 
     /// <summary>
-    /// 계획된 시작 시간
+    /// 계획 시작시간
     /// </summary>
-    public TimeOnly? SchStratTime { get; set; }
+    public TimeOnly? SchStartTime { get; set; }
 
     /// <summary>
-    /// 계획된 종료 시간
+    /// 계획 종료시간
     /// </summary>
     public TimeOnly? SchEndTime { get; set; }
 
     /// <summary>
-    /// 계획 설비 ID
+    /// 생산설비 ID
     /// </summary>
     public string? SchFacilityId { get; set; }
 
     public string? SchFacilityName { get; set; }
 
     /// <summary>
-    /// 계획 목표 수량
+    /// 계획목표수량
     /// </summary>
-    public int? SchAmount { get; set; }
+    public int SchAmount { get; set; }
 
     /// <summary>
-    /// 등록일
+    /// 작성일
     /// </summary>
     public DateTime? RegDt { get; set; }
 
     /// <summary>
     /// 수정일
-    /// 
     /// </summary>
     public DateTime? ModDt { get; set; }
 }

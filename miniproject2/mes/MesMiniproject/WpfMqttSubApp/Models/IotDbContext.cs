@@ -42,8 +42,6 @@ public partial class IotDbContext : DbContext
 
             entity.HasIndex(e => e.PrcCd, "prcCd_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.PrcDate, "prcDate_UNIQUE").IsUnique();
-
             entity.Property(e => e.PrcIdx)
                 .HasComment("공정처리 순번(자동증가)")
                 .HasColumnName("prcIdx");
@@ -56,7 +54,9 @@ public partial class IotDbContext : DbContext
                 .IsFixedLength()
                 .HasComment("공정처리 ID(UK) : yyyyMMdd-NewGuid(36)")
                 .HasColumnName("prcCd");
-            entity.Property(e => e.PrcDate).HasColumnName("prcDate");
+            entity.Property(e => e.PrcDate)
+                .HasComment("실제 공정처리일")
+                .HasColumnName("prcDate");
             entity.Property(e => e.PrcEndTime)
                 .HasComment("실제 종료시간")
                 .HasColumnType("time")
@@ -64,13 +64,13 @@ public partial class IotDbContext : DbContext
             entity.Property(e => e.PrcFacilityId)
                 .HasMaxLength(8)
                 .IsFixedLength()
-                .HasComment("실제 공정 장비 아이디\n")
+                .HasComment("실제 공정장비아이디")
                 .HasColumnName("prcFacilityId");
             entity.Property(e => e.PrcLoadTime)
-                .HasComment("실제 로드타입")
+                .HasComment("실제 로드타임")
                 .HasColumnName("prcLoadTime");
             entity.Property(e => e.PrcResult)
-                .HasComment("공정처리 여부(1은 성공 0은  실패)")
+                .HasComment("공정처리 여부(1성공, 0실패)")
                 .HasColumnName("prcResult");
             entity.Property(e => e.PrcStartTime)
                 .HasComment("실제 시작시간")
@@ -101,7 +101,7 @@ public partial class IotDbContext : DbContext
                 .HasComment("로드타임(초)")
                 .HasColumnName("loadTime");
             entity.Property(e => e.ModDt)
-                .HasComment("수정일\n")
+                .HasComment("수정일")
                 .HasColumnType("datetime")
                 .HasColumnName("modDt");
             entity.Property(e => e.PlantCode)
@@ -110,26 +110,28 @@ public partial class IotDbContext : DbContext
                 .HasComment("공장코드")
                 .HasColumnName("plantCode");
             entity.Property(e => e.RegDt)
-                .HasComment("등록일")
+                .HasComment("작성일")
                 .HasColumnType("datetime")
                 .HasColumnName("regDt");
             entity.Property(e => e.SchAmount)
-                .HasComment("계획 목표 수량")
+                .HasComment("계획목표수량")
                 .HasColumnName("schAmount");
-            entity.Property(e => e.SchDate).HasColumnName("schDate");
+            entity.Property(e => e.SchDate)
+                .HasComment("공정계획일")
+                .HasColumnName("schDate");
             entity.Property(e => e.SchEndTime)
-                .HasComment("계획된 종료 시간")
+                .HasComment("계획 종료시간")
                 .HasColumnType("time")
                 .HasColumnName("schEndTime");
             entity.Property(e => e.SchFacilityId)
                 .HasMaxLength(8)
                 .IsFixedLength()
-                .HasComment("계획 설비 ID")
+                .HasComment("생산설비 ID")
                 .HasColumnName("schFacilityId");
-            entity.Property(e => e.SchStratTime)
-                .HasComment("계획된 시작 시간")
+            entity.Property(e => e.SchStartTime)
+                .HasComment("계획 시작시간")
                 .HasColumnType("time")
-                .HasColumnName("schStratTime");
+                .HasColumnName("schStartTime");
         });
 
         modelBuilder.Entity<Setting>(entity =>
@@ -141,21 +143,19 @@ public partial class IotDbContext : DbContext
             entity.Property(e => e.BasicCode)
                 .HasMaxLength(8)
                 .IsFixedLength()
-                .HasComment("기본코드\n")
+                .HasComment("기본코드")
                 .HasColumnName("basicCode");
             entity.Property(e => e.CodeDesc)
-                .HasComment("코드설명\n")
+                .HasComment("코드설명")
                 .HasColumnName("codeDesc");
             entity.Property(e => e.CodeName)
                 .HasMaxLength(100)
-                .HasComment("코드명\n")
+                .HasComment("코드명")
                 .HasColumnName("codeName");
             entity.Property(e => e.ModDt)
-                .HasComment("수정일자")
                 .HasColumnType("datetime")
                 .HasColumnName("modDt");
             entity.Property(e => e.RegDt)
-                .HasComment("등록일자")
                 .HasColumnType("datetime")
                 .HasColumnName("regDt");
         });
