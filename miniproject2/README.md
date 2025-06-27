@@ -83,7 +83,9 @@ ERD
 3. View, ViewModel 구성
 4. WPF 애니메이션 기능으로 컨베이어벨트 구현
 
-    https://github.com/user-attachments/assets/9f760628-0bd8-48e4-b880-32cb2a312876    
+
+    https://github.com/user-attachments/assets/7df52417-8b14-4a48-ad0b-b1b58d0cebd8
+
 
 5. 선별결과 MQTT로 전달 기능 추가
 
@@ -141,6 +143,10 @@ ERD
     - 기본 애니메이션 가져오기
     - Start 버튼 눌려서 IoT Simulator 동작시키고 동기화
     - 체크이후 성공/실패 결과 DB에 저장, 실시간 시각화
+
+
+https://github.com/user-attachments/assets/56f760cd-d59d-4810-8106-60a396fb3be5
+
 
 ##### 추후 작업(MiniProject 3)
 1. ReportView, ReportViewModel, LiveChart 작업
